@@ -6,16 +6,14 @@ spring:
 server:
   servlet:
     context-path: /chat
-  port: 5601
+  port: 5701
 
 netty:
-  port: 5602
+  port: 5702
   bossThread: 2
   workerThread: 2
   keepalive: true
   backlog: 100
-
-
 
 
 

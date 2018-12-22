@@ -68,7 +68,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     eventType ="读写空闲";
                     break;
             }
-            ctx.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(ResMsg.succWithData(channelId + ":10秒没有心跳，链接被关闭了，超时类型为：" + eventType))));
+            ctx.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(ResMsg.succWithData(channelId + ":15秒没有心跳，链接被关闭了，超时类型为：" + eventType))));
             ctx.close();
             log.info(channelId + "链接被关闭了!!!!!!");
         }
