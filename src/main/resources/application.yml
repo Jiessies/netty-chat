@@ -2,6 +2,17 @@
 spring:
   application:
     name: netty-chat
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    lettuce:
+      pool:
+        max-wait: -1
+        max-idle: 8
+        max-active: 8
+        min-idle: 0
+    timeout: 10000
 
 server:
   servlet:
@@ -15,6 +26,13 @@ netty:
   keepalive: true
   backlog: 100
 
+http:
+  pool:
+    max-totle: 200
+    max-per-route: 20
+    connect-request-timeout: 5000
+    connect-timeout: 5000
+    socket-timeout: 61000
 
 
 
