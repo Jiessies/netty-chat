@@ -13,6 +13,10 @@ spring:
         max-active: 8
         min-idle: 0
     timeout: 10000
+  security:
+    user:
+      password: admin
+      name: 1234567
 
 server:
   servlet:
