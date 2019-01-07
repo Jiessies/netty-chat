@@ -1,5 +1,6 @@
 package com.jie.space.nettychat.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.jie.space.nettychat.config.msg.ResMsg;
 import com.jie.space.nettychat.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -69,10 +71,46 @@ public class IndexController {
         return "successkey" + i;
     }
 
+    @GetMapping(value = "/set")
+    @ResponseBody
+    public String setRedis(@RequestParam(value = "key") String key,
+                           @RequestParam(value = "value") String value){
+        redisTemplate.setEnableTransactionSupport(true);
+        try {
+            redisTemplate.multi();
+            redisTemplate.opsForValue().set(key, value, 300, TimeUnit.SECONDS);
+            if(key.equals("11111")){
+                throw new RuntimeException("我报错了11111！");
+            }
+            redisTemplate.exec();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            redisTemplate.discard();
+        }
+        if(key.equals("22222")){
+            throw new RuntimeException("我报错了22222！");
+        }
+        return key;
+    }
+
     @GetMapping(value = "/delete")
     @ResponseBody
     public String deleteKey(@RequestParam(value = "key") String key){
         boolean flag = redisTemplate.delete(key);
         return "success " + flag;
+    }
+
+    @GetMapping(value = "/get")
+    @ResponseBody
+    public String getKey(@RequestParam(value = "key") String key){
+        Object object = redisTemplate.opsForValue().get(key);
+        return JSON.toJSONString(object);
+    }
+
+    @GetMapping(value = "/keys")
+    @ResponseBody
+    public String keys(@RequestParam(value = "key") String key){
+        Set<String> stringSet = redisTemplate.keys(key + "*");
+        return JSON.toJSONString(stringSet);
     }
 }
