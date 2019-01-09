@@ -106,7 +106,7 @@ public class IndexController {
         }
     }
 
-    private boolean setSynch(String key, Object value){
+    private boolean setSynch(String key, String value){
         redisTemplate.setEnableTransactionSupport(true);
         try {
             redisTemplate.multi();
