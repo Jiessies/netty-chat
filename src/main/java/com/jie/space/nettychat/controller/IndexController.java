@@ -93,6 +93,38 @@ public class IndexController {
         return key;
     }
 
+
+    @GetMapping(value = "/set111")
+    @ResponseBody
+    public String set111(@RequestParam(value = "key") String key,
+                           @RequestParam(value = "value") String value){
+        boolean flag = this.setSynch(key, value);
+        if(flag){
+            return key;
+        }else {
+            return "fail";
+        }
+    }
+
+    private boolean setSynch(String key, Object value){
+        redisTemplate.setEnableTransactionSupport(true);
+        try {
+            redisTemplate.multi();
+
+            redisTemplate.opsForValue().set(key, value);
+            if(key.equals("11111")){
+                throw new RuntimeException("我报错了11111！");
+            }
+
+            redisTemplate.exec();
+            return true;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            redisTemplate.discard();
+            return false;
+        }
+    }
+
     @GetMapping(value = "/delete")
     @ResponseBody
     public String deleteKey(@RequestParam(value = "key") String key){
