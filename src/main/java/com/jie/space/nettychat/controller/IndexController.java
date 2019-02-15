@@ -38,6 +38,10 @@ public class IndexController {
         return "/index2";
     }
 
+    @RequestMapping("/404")
+    public String html() {
+        return "/404";
+    }
     /**
      * 删除历史认证信息（接口内部调用）
      * @param openId
