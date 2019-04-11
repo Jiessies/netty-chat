@@ -1,14 +1,18 @@
 package com.jie.space.nettychat.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.jie.space.nettychat.config.mq.client.MqNameConst;
 import com.jie.space.nettychat.config.msg.ResMsg;
 import com.jie.space.nettychat.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +25,9 @@ public class IndexController {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private RabbitMessagingTemplate rabbitMessagingTemplate;
 
     @RequestMapping("/")
     @ResponseBody
@@ -149,4 +156,15 @@ public class IndexController {
         Set<String> stringSet = redisTemplate.keys(key + "*");
         return JSON.toJSONString(stringSet);
     }
+
+    @GetMapping(value = "/testmq")
+    @ResponseBody
+    public String testMq(@RequestParam(value = "value") String value){
+        ArrayList<String> objList = new ArrayList<String>(Arrays.asList("aaa", "bbb", "ccc","ddd","eeee", "ffff", "gggg"));
+        for(String obj : objList){
+            rabbitMessagingTemplate.convertAndSend(MqNameConst.WX_APPLET_CHAT_MESSAGE, obj);
+        }
+        return value;
+    }
+
 }

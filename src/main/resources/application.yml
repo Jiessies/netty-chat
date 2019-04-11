@@ -18,6 +18,20 @@ spring:
       password: admin
       name: 1234567
 
+  rabbitmq:
+    host: test.rabbitmq01.yktour.com.cn
+    port: 5672
+    username: rabbit
+    password: MQ7788%%
+    publisher-confirms: true
+    publisher-returns: true
+    virtual-host: /
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
+
 server:
   servlet:
     context-path: /chat
