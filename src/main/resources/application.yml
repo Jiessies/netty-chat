@@ -19,10 +19,10 @@ spring:
       name: 1234567
 
   rabbitmq:
-    host: test.rabbitmq01.yktour.com.cn
+    host: 127.0.0.1
     port: 5672
-    username: rabbit
-    password: MQ7788%%
+    username: admin
+    password: admin
     publisher-confirms: true
     publisher-returns: true
     virtual-host: /
